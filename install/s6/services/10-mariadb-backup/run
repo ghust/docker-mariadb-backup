@@ -177,7 +177,16 @@ if [ "$SPLIT_DB" = "TRUE" ];  then
         echo "Dumping database: $db"
         TARGET=db_${db}_${DBSERVER}_${now}.sql
         
-        mysqldump --max-allowed-packet=512M -h $DBSERVER -u$DBUSER -p$DBPASS --databases $db > ${TMPDIR}/${TARGET}
+        
+    if  [ "$NOLOCK" = "TRUE" ]; then
+      mysqldump --max-allowed-packet=512M --single-transaction --skip-lock-tables -A -h $DBSERVER -u$DBUSER -p$DBPASS --databases $db > ${TMPDIR}/${TARGET}
+      
+
+    else
+      mysqldump --max-allowed-packet=512M --single-transaction --skip-lock-tables -A -A -h $DBSERVER -u$DBUSER -p$DBPASS > ${TMPDIR}/${TARGET}
+    fi
+
+
 
                 if [ "$MD5" = "TRUE" ];  then  
                   cd $TMPDIR
@@ -230,7 +239,7 @@ done
     
 else
     if  [ "$NOLOCK" = "TRUE" ]; then
-      mysqldump --max-allowed-packet=512M --single-transaction --skip-lock-tables -A -h $DBSERVER -u$DBUSER -p$DBPASS > ${TMPDIR}/${TARGET}
+      mysqldump --max-allowed-packet=512M --single-transaction --skip-lock-tables -v -A -h $DBSERVER -u$DBUSER -p$DBPASS > ${TMPDIR}/${TARGET}
 
     else
       mysqldump --max-allowed-packet=512M -A -h $DBSERVER -u$DBUSER -p$DBPASS > ${TMPDIR}/${TARGET}
