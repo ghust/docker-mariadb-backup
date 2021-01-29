@@ -40,6 +40,10 @@ SPLIT_DB=${SPLIT_DB:-FALSE}
 # MD5 SUM
 MD5=${MD5:-TRUE}
 
+# NO LOCK
+
+NOLOCK=${NOLOCK:-FALSE}
+
 # this is global, so has to be set outside
 declare -A uri
 
@@ -225,7 +229,12 @@ done
 
     
 else
+    if ["$NOLOCK" = "TRUE"]; then
+      mysqldump --max-allowed-packet=512M --single-transaction --skip-lock-tables -A -h $DBSERVER -u$DBUSER -p$DBPASS > ${TMPDIR}/${TARGET}
 
+    else
+      mysqldump --max-allowed-packet=512M -A -h $DBSERVER -u$DBUSER -p$DBPASS > ${TMPDIR}/${TARGET}
+    fi
     # make the dump (Default)
     mysqldump --max-allowed-packet=512M -A -h $DBSERVER -u$DBUSER -p$DBPASS > ${TMPDIR}/${TARGET}
      
