@@ -229,7 +229,7 @@ done
 
     
 else
-    if ["$NOLOCK" = "TRUE"]; then
+    if  [ "$NOLOCK" = "TRUE" ]; then
       mysqldump --max-allowed-packet=512M --single-transaction --skip-lock-tables -A -h $DBSERVER -u$DBUSER -p$DBPASS > ${TMPDIR}/${TARGET}
 
     else
