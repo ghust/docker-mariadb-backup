@@ -13,7 +13,7 @@ LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
        rm -rf /var/cache/apk/* 
 
 ### S6 Setup
-   ADD install/s6 /etc/s6
+   ADD /install/s6 /etc/s6
 
 ### Entrypoint Configuration  
    ENTRYPOINT ["/init"]
